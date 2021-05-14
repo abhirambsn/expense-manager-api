@@ -12,6 +12,7 @@ const registerValidator = require('../validators/Register')
 const changePasswordValidator = require('../validators/ChangePassword')
 const changeIncomeValidator = require('../validators/ModifyIncome')
 const deleteAccountValidator = require('../validators/DeleteAccount')
+const logger = require('../logs/Logger')
 
 const login = async (req, res) => {
     const data = req.body
@@ -66,16 +67,16 @@ const register = async (req, res) => {
         mailer.sendMail(mail, async (err, info) => {
             if (err) {
                 await userModel.findOneAndDelete({_id: user._id}).exec()
-                console.error(err) // TODO: remove this stmt and add to log
+                logger.error(err)
                 return res.status(500).send({error: "Mailing Error, please try again"})
             } else {
-                console.log(info); // TODO: remove this stmt and add to log
-                console.log(`Email Sent to: ${user.email}`) // TODO: remove this stmt too
+                var log_data = {...info, finalResult: `Email Sent to: ${user.email}`}
+                logger.info(log_data)
                 return res.status(201).send(savedUser)      
             }
         })
     } catch (err) {
-        console.log(err);
+        logger.error(err)
         return res.status(400).send({error: err})
     }
 }

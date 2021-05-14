@@ -1,5 +1,5 @@
 const excel = require('exceljs')
-const fs = require('fs')
+const logger = require('../logging/Logger')
 
 // Models
 const expenseModel = require('../models/Expense')
@@ -29,7 +29,7 @@ const addExpense = async (req, res) => {
         const savedExpense = await expense.save()
         return res.status(201).send(savedExpense)
     } catch (error) {
-        console.log(error); // TODO: Remove this stmt
+        logger.error(error)
         return res.status(400).send({ error: new String(error) })
     }
 }
@@ -101,7 +101,7 @@ const exportToExcel = async (req, res) => {
             return res.status(200).sendFile(`/files/${req.user._id}_Report.xlsx`)
         })
         .catch((error) => {
-            console.error(error); // TODO: Remove the stmt and add it to logs
+            logger.error(error)
             return res.status(400).send({error: new String(error)})
         })
 }
