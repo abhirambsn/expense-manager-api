@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken')
+const logger = require('../logging/Logger')
 
 const isAuthenticated = (req, res, next) => {
     const authToken = req.header('Authorization')
@@ -9,7 +10,7 @@ const isAuthenticated = (req, res, next) => {
         req.user = verify
         next()
     } catch (error) {
-        console.log(error);
+        logger.error(error)
         return res.status(400).send({error: "Invalid Token"})
     }
 }
