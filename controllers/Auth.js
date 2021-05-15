@@ -12,7 +12,7 @@ const registerValidator = require('../validators/Register')
 const changePasswordValidator = require('../validators/ChangePassword')
 const changeIncomeValidator = require('../validators/ModifyIncome')
 const deleteAccountValidator = require('../validators/DeleteAccount')
-const logger = require('../logs/Logger')
+const logger = require('../logging/Logger')
 
 const login = async (req, res) => {
     const data = req.body
